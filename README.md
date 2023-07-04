@@ -64,8 +64,8 @@ Character:
 
 ### Routes GRPC
 
-Login
-Register
-CreateCharacter
-CreateTags
-CreateHistories
+- Login
+- Register
+- CreateCharacter
+- CreateTags
+- CreateHistories
