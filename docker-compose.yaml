@@ -1,0 +1,15 @@
+# Use root/example as user/password credentials
+version: '3.8'
+
+services:
+
+  mongo:
+    image: mongo:6.0-focal
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - 27036:27017
+    volumes:
+      - ./data:/data/db
