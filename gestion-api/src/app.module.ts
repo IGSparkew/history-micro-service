@@ -9,6 +9,7 @@ import {ChatController} from "./chat/app.controller";
 import {ChatService} from "./chat/app.service";
 import { GroupController } from './group/app.controller';
 import { GroupService } from './group/app.service';
+import { Group, GroupSchema } from './schemas/group.schema';
 
 
 @Module({
@@ -17,7 +18,15 @@ import { GroupService } from './group/app.service';
     envFilePath: '.env.local',
     isGlobal: true,
   }), 
-  MongooseModule.forRoot(process.env.DATABASE_URL)],
+  MongooseModule.forRoot(process.env.DATABASE_URL, {
+    dbName: 'chat'
+  }),
+  MongooseModule.forFeature([
+    {
+      name:Group.name,
+      schema: GroupSchema
+    }
+  ])],
   controllers: [AppController, ChatController, GroupController],
   providers: [AppService, ChatService, GroupService],
 })
