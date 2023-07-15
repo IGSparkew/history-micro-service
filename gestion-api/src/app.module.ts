@@ -7,6 +7,8 @@ import { grpcConfig } from './grpc.config';
 import { GrpcReflectionModule } from 'nestjs-grpc-reflection';
 import {ChatController} from "./chat/app.controller";
 import {ChatService} from "./chat/app.service";
+import { GroupController } from './group/app.controller';
+import { GroupService } from './group/app.service';
 
 
 @Module({
@@ -16,7 +18,7 @@ import {ChatService} from "./chat/app.service";
     isGlobal: true,
   }), 
   MongooseModule.forRoot(process.env.DATABASE_URL)],
-  controllers: [AppController, ChatController],
-  providers: [AppService, ChatService],
+  controllers: [AppController, ChatController, GroupController],
+  providers: [AppService, ChatService, GroupService],
 })
 export class AppModule {}

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package group.v1alpha;
+
+
+message CreateGroupRequest {
+    string name = 1;
+}
+
+message CreateGroupResponse {
+    int32 group_id = 1;
+    string name = 2;
+}
+
+message GetGroupRequest {
+    int32 group_id = 1;
+}
+
+
+message GetGroupResponse {
+    int32 group_id = 1;
+    string name = 2;
+}
+
+service GroupService {
+    rpc CreateGroup (CreateGroupRequest) returns (CreateGroupResponse);
+    rpc FindGroup (GetGroupRequest) returns (GetGroupResponse);
+}
