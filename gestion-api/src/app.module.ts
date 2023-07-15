@@ -10,12 +10,12 @@ import {ChatService} from "./chat/app.service";
 
 
 @Module({
-  imports: [ConfigModule.forRoot({
+  imports: [GrpcReflectionModule.register(grpcConfig),
+    ConfigModule.forRoot({
     envFilePath: '.env.local',
     isGlobal: true,
   }), 
-  MongooseModule.forRoot(process.env.DATABASE_URL), 
-  GrpcReflectionModule.register(grpcConfig)],
+  MongooseModule.forRoot(process.env.DATABASE_URL)],
   controllers: [AppController, ChatController],
   providers: [AppService, ChatService],
 })

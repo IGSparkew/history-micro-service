@@ -7,7 +7,7 @@ import {
     ChatServiceControllerMethods, ChatUserRequest, GroupRequest, UserRequest
 } from "../stubs/chat/v1alpha/chat";
 import {Metadata} from "@grpc/grpc-js";
-import {GrpcMethod, RpcException} from "@nestjs/microservices";
+import {RpcException} from "@nestjs/microservices";
 import {ChatService} from "./app.service";
 
 @Controller()
@@ -17,7 +17,12 @@ export class ChatController implements ChatServiceController {
     constructor(private readonly chatService:ChatService ) {}
 
     async createChatWitGroup(request: ChatGroupRequest, metadata?: Metadata): Promise<ChatReponse>  {
-        return undefined;
+        return {
+            chat: {
+                id: 0,
+                content: "test"
+            }
+        };
     }
 
     async createChatWithUser(request: ChatUserRequest, metadata?: Metadata): Promise<ChatReponse>  {
@@ -31,11 +36,15 @@ export class ChatController implements ChatServiceController {
     }
 
     async findChatWithGroup(request: GroupRequest, metadata?: Metadata): Promise<ChatList>  {
-        return undefined;
+        return {
+            chats: []
+        }
     }
 
     async findChatWithUser(request: UserRequest, metadata?: Metadata): Promise<ChatList>  {
-        return undefined;
+        return {
+            chats: []
+        }
     }
 
 }
