@@ -7,25 +7,34 @@ import {
     ChatServiceControllerMethods, ChatUserRequest, GroupRequest, UserRequest
 } from "../stubs/chat/v1alpha/chat";
 import {Metadata} from "@grpc/grpc-js";
-import {Observable} from "rxjs";
+import {GrpcMethod, RpcException} from "@nestjs/microservices";
+import {ChatService} from "./app.service";
 
 @Controller()
 @ChatServiceControllerMethods()
-export class ChatController implements ChatServiceController{
+export class ChatController implements ChatServiceController {
 
-    createChatWitGroup(request: ChatGroupRequest, metadata?: Metadata): Promise<ChatReponse> | Observable<ChatReponse> | ChatReponse {
+    constructor(private readonly chatService:ChatService ) {}
+
+    async createChatWitGroup(request: ChatGroupRequest, metadata?: Metadata): Promise<ChatReponse>  {
         return undefined;
     }
 
-    createChatWithUser(request: ChatUserRequest, metadata?: Metadata): Promise<ChatReponse> | Observable<ChatReponse> | ChatReponse {
+    async createChatWithUser(request: ChatUserRequest, metadata?: Metadata): Promise<ChatReponse>  {
+        console.log("test");
+        if (!request.userId || !request.ownerId) {
+            throw new RpcException("Error Input not valid");
+        }
+
+        return this.chatService.createChatWithUser(request.chat);
+
+    }
+
+    async findChatWithGroup(request: GroupRequest, metadata?: Metadata): Promise<ChatList>  {
         return undefined;
     }
 
-    findChatWithGroup(request: GroupRequest, metadata?: Metadata): Promise<ChatList> | Observable<ChatList> | ChatList {
-        return undefined;
-    }
-
-    findChatWithUser(request: UserRequest, metadata?: Metadata): Promise<ChatList> | Observable<ChatList> | ChatList {
+    async findChatWithUser(request: UserRequest, metadata?: Metadata): Promise<ChatList>  {
         return undefined;
     }
 
