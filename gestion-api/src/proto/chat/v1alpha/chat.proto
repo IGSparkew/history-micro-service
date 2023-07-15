@@ -3,7 +3,7 @@ syntax = "proto3";
 package chat.v1alpha;
 
 message Chat {
-    int32 id = 1;
+    string id = 1;
     string content = 2;
 }
 

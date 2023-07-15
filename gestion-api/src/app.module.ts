@@ -10,6 +10,7 @@ import {ChatService} from "./chat/app.service";
 import { GroupController } from './group/app.controller';
 import { GroupService } from './group/app.service';
 import { Group, GroupSchema } from './schemas/group.schema';
+import { Chat, ChatSchema } from './schemas/chat.schema';
 
 
 @Module({
@@ -25,6 +26,10 @@ import { Group, GroupSchema } from './schemas/group.schema';
     {
       name:Group.name,
       schema: GroupSchema
+    },
+    {
+      name: Chat.name,
+      schema: ChatSchema
     }
   ])],
   controllers: [AppController, ChatController, GroupController],

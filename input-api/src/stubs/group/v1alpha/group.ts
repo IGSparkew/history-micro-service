@@ -6,21 +6,21 @@ import { Observable } from "rxjs";
 export const protobufPackage = "group.v1alpha";
 
 export interface CreateGroupRequest {
-  name?: string | undefined;
+  name: string;
 }
 
 export interface CreateGroupResponse {
-  groupId?: number | undefined;
-  name?: string | undefined;
+  groupId: number;
+  name: string;
 }
 
 export interface GetGroupRequest {
-  groupId?: number | undefined;
+  groupId: number;
 }
 
 export interface GetGroupResponse {
-  groupId?: number | undefined;
-  name?: string | undefined;
+  groupId: number;
+  name: string;
 }
 
 export const GROUP_V1ALPHA_PACKAGE_NAME = "group.v1alpha";

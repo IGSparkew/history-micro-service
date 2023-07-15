@@ -6,38 +6,38 @@ import { Observable } from "rxjs";
 export const protobufPackage = "chat.v1alpha";
 
 export interface Chat {
-  id?: number | undefined;
-  content?: string | undefined;
+  id: string;
+  content: string;
 }
 
 export interface ChatUserRequest {
-  chat?: Chat | undefined;
-  userId?: number | undefined;
-  ownerId?: number | undefined;
+  chat: Chat | undefined;
+  userId: number;
+  ownerId: number;
 }
 
 export interface ChatGroupRequest {
-  chat?: Chat | undefined;
-  groupId?: number | undefined;
-  ownerId?: number | undefined;
+  chat: Chat | undefined;
+  groupId: number;
+  ownerId: number;
 }
 
 export interface ChatReponse {
-  chat?: Chat | undefined;
+  chat: Chat | undefined;
 }
 
 export interface UserRequest {
-  ownerId?: number | undefined;
-  userId?: number | undefined;
+  ownerId: number;
+  userId: number;
 }
 
 export interface GroupRequest {
-  ownerId?: number | undefined;
-  groupId?: number | undefined;
+  ownerId: number;
+  groupId: number;
 }
 
 export interface ChatList {
-  chats?: Chat[] | undefined;
+  chats: Chat[];
 }
 
 export const CHAT_V1ALPHA_PACKAGE_NAME = "chat.v1alpha";
