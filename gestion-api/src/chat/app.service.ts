@@ -9,7 +9,7 @@ export class ChatService {
 
     constructor(@InjectModel(Chat.name) private chatModel: Model<Chat>) {}
 
-    async createChatWithUser(content: string, userId: number, ownerId: number): Promise<ChatReponse> {
+    async createChatWithUser(content: string, userId: string, ownerId: string): Promise<ChatReponse> {
         const createdChatWithUser = new this.chatModel({
             content: content,
             user_id: userId,
@@ -24,7 +24,7 @@ export class ChatService {
         };
     }
 
-    async createChatWithGroup(content: string, groupId: number, ownerId: number): Promise<ChatReponse> {
+    async createChatWithGroup(content: string, groupId: string, ownerId: string): Promise<ChatReponse> {
         const createdChatWithGroup = new this.chatModel({
             content: content,
             group_id: groupId,

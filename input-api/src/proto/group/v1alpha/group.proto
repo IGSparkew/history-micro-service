@@ -8,17 +8,17 @@ message CreateGroupRequest {
 }
 
 message CreateGroupResponse {
-    int32 group_id = 1;
+    string group_id = 1;
     string name = 2;
 }
 
 message GetGroupRequest {
-    int32 group_id = 1;
+    string group_id = 1;
 }
 
 
 message GetGroupResponse {
-    int32 group_id = 1;
+    string group_id = 1;
     string name = 2;
 }
 

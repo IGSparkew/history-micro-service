@@ -10,16 +10,16 @@ export interface CreateGroupRequest {
 }
 
 export interface CreateGroupResponse {
-  groupId: number;
+  groupId: string;
   name: string;
 }
 
 export interface GetGroupRequest {
-  groupId: number;
+  groupId: string;
 }
 
 export interface GetGroupResponse {
-  groupId: number;
+  groupId: string;
   name: string;
 }
 

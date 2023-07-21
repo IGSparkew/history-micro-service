@@ -13,19 +13,19 @@ export class GroupService {
         const groupCreated = new this.groupModel({name: groupName});
         const result = await groupCreated.save();
         return {
-            groupId:result.group_id,
+            groupId:result.id,
             name: result.name
         };
     }
 
-    async get(group_id: number): Promise<GetGroupResponse> {
+    async get(group_id: string): Promise<GetGroupResponse> {
         const getGroup = await this.groupModel.findOne({group_id: group_id});
         if (!getGroup) {
             return undefined;
         }
 
         return {
-            groupId: getGroup.group_id,
+            groupId: getGroup.id,
             name: getGroup.name
         };
     }

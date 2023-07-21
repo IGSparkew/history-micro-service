@@ -12,14 +12,14 @@ export interface Chat {
 
 export interface ChatUserRequest {
   chat: Chat | undefined;
-  userId: number;
-  ownerId: number;
+  userId: string;
+  ownerId: string;
 }
 
 export interface ChatGroupRequest {
   chat: Chat | undefined;
-  groupId: number;
-  ownerId: number;
+  groupId: string;
+  ownerId: string;
 }
 
 export interface ChatReponse {
@@ -27,13 +27,13 @@ export interface ChatReponse {
 }
 
 export interface UserRequest {
-  ownerId: number;
-  userId: number;
+  ownerId: string;
+  userId: string;
 }
 
 export interface GroupRequest {
-  ownerId: number;
-  groupId: number;
+  ownerId: string;
+  groupId: string;
 }
 
 export interface ChatList {
