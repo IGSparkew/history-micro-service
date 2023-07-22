@@ -36,7 +36,7 @@ message ChatUserRequest {
     string user_id = 3;
 }
 
-message ChatUserRequest {
+message ChatGroupRequest {
     string token = 1;
     Chat chat = 2;
     string group_id = 3;
