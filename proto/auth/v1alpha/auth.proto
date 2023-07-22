@@ -32,12 +32,12 @@ message RegisterResponse {
 
 message ChatRequest {
     string token = 1;
-    Chat chat = 2;
+    Array data = 2;
 }
 
 message ChatResponse {
     string token = 1;
-    Chat chat = 2;
+    Array data = 2;
 }
 
 message checkUserRequest {

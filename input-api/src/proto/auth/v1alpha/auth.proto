@@ -1,15 +1,11 @@
+import "../../chat/v1alpha/chat.proto";
 syntax = "proto3";
 
 package auth.v1alpha;
 
-message Chat {
-    string id = 1;
-    string content = 2;
-}
-
 message Auth {
-    string username = 1;
-    string password = 2;
+    string username = 2;
+    string password = 3;
 }
 
 message LoginRequest {
@@ -32,12 +28,20 @@ message RegisterResponse {
 
 message ChatRequest {
     string token = 1;
-    Chat chat = 2;
+    Array data = 2;
 }
 
 message ChatResponse {
     string token = 1;
-    Chat chat = 2;
+    Array data = 2;
+}
+
+message checkUserRequest {
+    string id = 1;
+}
+
+message checkUserResponse {
+    string message = 1;
 }
 
 message checkUserRequest {
