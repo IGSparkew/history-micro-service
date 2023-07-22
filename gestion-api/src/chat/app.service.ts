@@ -1,13 +1,14 @@
 import {Injectable} from "@nestjs/common";
-import {ChatReponse} from "../stubs/chat/v1alpha/chat";
+import {ChatList, ChatReponse} from "../stubs/chat/v1alpha/chat";
 import { InjectModel } from "@nestjs/mongoose";
 import { Chat  } from "src/schemas/chat.schema";
 import { Model } from "mongoose";
+import { GroupService } from "src/group/app.service";
 
 @Injectable()
 export class ChatService {
 
-    constructor(@InjectModel(Chat.name) private chatModel: Model<Chat>) {}
+    constructor(@InjectModel(Chat.name) private chatModel: Model<Chat>, private groupService: GroupService) {}
 
     async createChatWithUser(content: string, userId: string, ownerId: string): Promise<ChatReponse> {
         const createdChatWithUser = new this.chatModel({
@@ -30,6 +31,11 @@ export class ChatService {
             group_id: groupId,
             owner_id: ownerId
         });
+
+        if (!this.groupService.get(groupId)) {
+            return undefined;
+        }
+
         const response = await createdChatWithGroup.save();
         return {
             chat: {
@@ -37,5 +43,26 @@ export class ChatService {
                 content: response.content
             }
         };
+    }
+
+    async findChatWithGroup(groupId: string): Promise<ChatList> {
+        const chatsFinded = await this.chatModel.find({group_id: groupId});
+        const response = []
+        if (!chatsFinded || chatsFinded.length == 0) {
+            return {
+                chats: response
+            }
+        }
+
+        for(let chatFind of chatsFinded) {
+            response.push({
+                id: chatFind.id,
+                content: chatFind.content
+            })
+        }
+
+        return {
+            chats: response
+        }
     }
 }

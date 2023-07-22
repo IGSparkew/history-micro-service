@@ -66,9 +66,12 @@ export class ChatController implements ChatServiceController {
     request: GroupRequest,
     metadata?: Metadata,
   ): Promise<ChatList> {
-    return {
-      chats: [],
-    };
+    if(!request || !request.groupId || !request.ownerId) {
+      throw new RpcException('Error Input not valid');
+    }
+
+
+    return this.chatService.findChatWithGroup(request.groupId)
   }
 
   async findChatWithUser(

@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package group.v1alpha;
 
+message Empty {
+
+}
 
 message CreateGroupRequest {
     string name = 1;
@@ -22,7 +25,12 @@ message GetGroupResponse {
     string name = 2;
 }
 
+message GetAllGroupsResponse {
+    repeated GetGroupResponse groups = 1;
+}
+
 service GroupService {
     rpc CreateGroup (CreateGroupRequest) returns (CreateGroupResponse);
     rpc FindGroup (GetGroupRequest) returns (GetGroupResponse);
+    rpc FindAllGroup(Empty) returns (GetAllGroupsResponse);
 }

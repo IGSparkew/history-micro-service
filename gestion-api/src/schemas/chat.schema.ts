@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, ObjectId } from "mongoose";
+import mongoose, { HydratedDocument } from "mongoose";
+import { Group } from "./group.schema";
 
 
 export type ChatDocument = HydratedDocument<Chat>;
@@ -11,13 +12,13 @@ export class Chat {
     content: string;
 
     @Prop({required: true})
-    owner_id: number;
+    owner_id: string;
+
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Group'})
+    group_id: Group;
 
     @Prop()
-    group_id: number | undefined;
-
-    @Prop()
-    user_id:number | undefined;
+    user_id:string | undefined;
 }
 
 export const ChatSchema = SchemaFactory.createForClass(Chat);
