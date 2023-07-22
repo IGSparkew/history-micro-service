@@ -5,18 +5,17 @@ package chat.v1alpha;
 message Chat {
     string id = 1;
     string content = 2;
+    string owner_id= 3;
 }
 
 message ChatUserRequest {
     Chat chat = 1;
     string user_id = 2;
-    string owner_id =3;
 }
 
 message ChatGroupRequest {
     Chat chat = 1;
     string group_id =2;
-    string owner_id =3;
 }
 
 message ChatReponse {
@@ -24,13 +23,11 @@ message ChatReponse {
 }
 
 message UserRequest {
-    string owner_id=1;
-    string user_id=2;
+    string user_id=1;
 }
 
 message GroupRequest {
-    string owner_id=1;
-    string group_id=2;
+    string group_id=1;
 }
 
 message ChatList {

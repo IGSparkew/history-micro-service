@@ -23,13 +23,11 @@ message ChatReponse {
 }
 
 message UserRequest {
-    string owner_id=1;
-    string user_id=2;
+    string user_id=1;
 }
 
 message GroupRequest {
-    string owner_id=1;
-    string group_id=2;
+    string group_id=1;
 }
 
 message ChatList {

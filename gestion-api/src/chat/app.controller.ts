@@ -100,7 +100,7 @@ export class ChatController implements ChatServiceController {
     request: GroupRequest,
     metadata?: Metadata,
   ): Promise<ChatList> {
-    if(!request || !request.groupId || !request.ownerId) {
+    if(!request || !request.groupId) {
       throw new RpcException('Error Input not valid');
     }
 
@@ -116,9 +116,21 @@ export class ChatController implements ChatServiceController {
     request: UserRequest,
     metadata?: Metadata,
   ): Promise<ChatList> {
-    return {
-      chats: [],
-    };
+
+    
+    const right_auth = await this.checkAuthService.checkTokenApi(metadata);
+    if (!right_auth) {
+      throw new RpcException('Error unauthorized auth!')
+    }
+    
+    const ownerId = await this.checkAuthService.getUserId(metadata);
+    const isOwner = this.checkUserService.checkUser(ownerId);
+
+    if(!isOwner) {
+      throw new RpcException('Error not valid user');
+    }
+
+    return this.chatService.findChatWithUser(request.userId, ownerId);
   }
 
 

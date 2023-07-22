@@ -20,7 +20,8 @@ export class ChatService {
         return {
             chat: {
                 id: response.id,
-                content: response.content
+                content: response.content,
+                ownerId: response.owner_id
             }
         };
     }
@@ -40,7 +41,8 @@ export class ChatService {
         return {
             chat: {
                 id: response.id,
-                content: response.content
+                content: response.content,
+                ownerId: response.owner_id
             }
         };
     }
@@ -57,12 +59,45 @@ export class ChatService {
         for(let chatFind of chatsFinded) {
             response.push({
                 id: chatFind.id,
-                content: chatFind.content
+                content: chatFind.content,
+                owner_id: chatFind.owner_id
             })
         }
 
         return {
             chats: response
         }
+    }
+
+    async findChatWithUser(userId: string, owner_id: string): Promise<ChatList> {
+        const response = [];
+        // owner send to user 
+        const chatsFinded = await this.chatModel.find({user_id: userId, owner_id: owner_id});
+        // user resonse 
+        chatsFinded.concat(await this.chatModel.find({user_id: owner_id, owner_id: userId}));
+        
+        if (!chatsFinded || chatsFinded.length == 0) {
+            return {
+                chats: response
+            }
+        }
+
+        chatsFinded.sort(this.comparerPerDate);
+
+        for(let chatFind of chatsFinded) {
+            response.push({
+                id: chatFind.id,
+                content: chatFind.content,
+                owner_id: chatFind.owner_id
+            })
+        }
+
+        return {
+            chats: response
+        }
+    }
+
+    private comparerPerDate(first: Chat, second: Chat): number {
+        return first.createdAt.getTime() - second.createdAt.getTime();
     }
 }

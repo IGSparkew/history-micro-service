@@ -8,18 +8,17 @@ export const protobufPackage = "chat.v1alpha";
 export interface Chat {
   id: string;
   content: string;
+  ownerId: string;
 }
 
 export interface ChatUserRequest {
   chat: Chat | undefined;
   userId: string;
-  ownerId: string;
 }
 
 export interface ChatGroupRequest {
   chat: Chat | undefined;
   groupId: string;
-  ownerId: string;
 }
 
 export interface ChatReponse {
@@ -27,12 +26,10 @@ export interface ChatReponse {
 }
 
 export interface UserRequest {
-  ownerId: string;
   userId: string;
 }
 
 export interface GroupRequest {
-  ownerId: string;
   groupId: string;
 }
 

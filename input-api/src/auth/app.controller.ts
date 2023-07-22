@@ -2,8 +2,9 @@ import { Controller } from "@nestjs/common";
 import {
     AuthServiceController,
     AuthServiceControllerMethods,
-    ChatRequest,
+    ChatGroupRequest,
     ChatResponse,
+    ChatUserRequest,
     LoginRequest,
     LoginResponse,
     RegisterRequest,
@@ -22,7 +23,12 @@ import { Observable } from "rxjs";
 export class AuthController implements AuthServiceController {
 
     constructor(private readonly authService: AuthService) { }
-    chat(request: ChatRequest, metadata?: Metadata): ChatResponse | Promise<ChatResponse> | Observable<ChatResponse> {
+
+    chatWithUser(request: ChatUserRequest, metadata?: Metadata): ChatResponse | Promise<ChatResponse> | Observable<ChatResponse> {
+        throw new Error("Method not implemented.");
+    }
+    
+    chatWithGroup(request: ChatGroupRequest, metadata?: Metadata): ChatResponse | Promise<ChatResponse> | Observable<ChatResponse> {
         throw new Error("Method not implemented.");
     }
 

@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { HydratedDocument } from "mongoose";
+import mongoose, {now, HydratedDocument } from "mongoose";
 import { Group } from "./group.schema";
 
 
 export type ChatDocument = HydratedDocument<Chat>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Chat {
 
     @Prop({required: true})
@@ -19,6 +19,9 @@ export class Chat {
 
     @Prop()
     user_id:string | undefined;
-}
+
+    @Prop({default: now()})
+    createdAt:Date
+}   
 
 export const ChatSchema = SchemaFactory.createForClass(Chat);

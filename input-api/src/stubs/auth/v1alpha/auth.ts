@@ -5,45 +5,49 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "auth.v1alpha";
 
-export interface Auth {
-    username?: string | undefined;
-    password?: string | undefined;
+export interface Chat {
+  id: string;
+  content: string;
 }
 
-export interface RegisterRequest {
-    username?: string | undefined;
-    password?: string | undefined;
+export interface Auth {
+  username: string;
+  password: string;
 }
 
 export interface LoginRequest {
-    username?: string | undefined;
-    password?: string | undefined;
+  username: string;
+  password: string;
 }
 
 export interface LoginResponse {
-    token?: String | undefined;
+  token: string;
+}
+
+export interface RegisterRequest {
+  username: string;
+  password: string;
 }
 
 export interface RegisterResponse {
-    message?: string | undefined;
+  message: string;
 }
 
-export interface checkUserRequest {
-    id: string;
+export interface ChatUserRequest {
+  token: string;
+  chat: Chat | undefined;
+  userId: string;
 }
 
-export interface checkUserResponse {
-    message: boolean;
-}
-
-export interface ChatRequest {
-    token : string;
-    data : Array<any>;
+export interface ChatGroupRequest {
+  token: string;
+  chat: Chat | undefined;
+  groupId: string;
 }
 
 export interface ChatResponse {
-    token : string;
-    data : Array<any>;
+  token: string;
+  chatList: Chat[];
 }
 
 export interface checkUserRequest {
@@ -63,31 +67,38 @@ export interface AuthServiceClient {
 
   checkUser(request: checkUserRequest, metadata?: Metadata): Observable<checkUserResponse>;
 
-  chat(request: ChatRequest, metadata?: Metadata): Observable<ChatResponse>;
+  chatWithUser(request: ChatUserRequest, metadata?: Metadata): Observable<ChatResponse>;
+
+  chatWithGroup(request: ChatGroupRequest, metadata?: Metadata): Observable<ChatResponse>;
 }
 
 export interface AuthServiceController {
-    register(
-        request: RegisterRequest,
-        metadata?: Metadata,
-    ): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
+  register(
+    request: RegisterRequest,
+    metadata?: Metadata,
+  ): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
 
-    login(
-        request: LoginRequest,
-        metadata?: Metadata,
-    ): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+  login(request: LoginRequest, metadata?: Metadata): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
 
   checkUser(
     request: checkUserRequest,
     metadata?: Metadata,
   ): Promise<checkUserResponse> | Observable<checkUserResponse> | checkUserResponse;
 
-  chat(request: ChatRequest, metadata?: Metadata): Promise<ChatResponse> | Observable<ChatResponse> | ChatResponse;
+  chatWithUser(
+    request: ChatUserRequest,
+    metadata?: Metadata,
+  ): Promise<ChatResponse> | Observable<ChatResponse> | ChatResponse;
+
+  chatWithGroup(
+    request: ChatGroupRequest,
+    metadata?: Metadata,
+  ): Promise<ChatResponse> | Observable<ChatResponse> | ChatResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["register", "login", "checkUser", "chat"];
+    const grpcMethods: string[] = ["register", "login", "checkUser", "chatWithUser", "chatWithGroup"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);

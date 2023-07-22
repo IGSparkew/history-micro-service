@@ -33,14 +33,21 @@ export interface RegisterResponse {
   message: string;
 }
 
-export interface ChatRequest {
+export interface ChatUserRequest {
   token: string;
   chat: Chat | undefined;
+  userId: string;
+}
+
+export interface ChatGroupRequest {
+  token: string;
+  chat: Chat | undefined;
+  groupId: string;
 }
 
 export interface ChatResponse {
   token: string;
-  chat: Chat | undefined;
+  chatList: Chat[];
 }
 
 export interface checkUserRequest {
@@ -60,7 +67,9 @@ export interface AuthServiceClient {
 
   checkUser(request: checkUserRequest, metadata?: Metadata): Observable<checkUserResponse>;
 
-  chat(request: ChatRequest, metadata?: Metadata): Observable<ChatResponse>;
+  chatWithUser(request: ChatUserRequest, metadata?: Metadata): Observable<ChatResponse>;
+
+  chatWithGroup(request: ChatGroupRequest, metadata?: Metadata): Observable<ChatResponse>;
 }
 
 export interface AuthServiceController {
@@ -76,12 +85,20 @@ export interface AuthServiceController {
     metadata?: Metadata,
   ): Promise<checkUserResponse> | Observable<checkUserResponse> | checkUserResponse;
 
-  chat(request: ChatRequest, metadata?: Metadata): Promise<ChatResponse> | Observable<ChatResponse> | ChatResponse;
+  chatWithUser(
+    request: ChatUserRequest,
+    metadata?: Metadata,
+  ): Promise<ChatResponse> | Observable<ChatResponse> | ChatResponse;
+
+  chatWithGroup(
+    request: ChatGroupRequest,
+    metadata?: Metadata,
+  ): Promise<ChatResponse> | Observable<ChatResponse> | ChatResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["register", "login", "checkUser", "chat"];
+    const grpcMethods: string[] = ["register", "login", "checkUser", "chatWithUser", "chatWithGroup"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);

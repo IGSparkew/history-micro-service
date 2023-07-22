@@ -1,11 +1,15 @@
-import "../../chat/v1alpha/chat.proto";
 syntax = "proto3";
 
 package auth.v1alpha;
 
+message Chat {
+    string id = 1;
+    string content = 2;
+}
+
 message Auth {
-    string username = 2;
-    string password = 3;
+    string username = 1;
+    string password = 2;
 }
 
 message LoginRequest {
@@ -26,22 +30,21 @@ message RegisterResponse {
     string message = 1;
 }
 
-message ChatRequest {
+message ChatUserRequest {
     string token = 1;
-    Array data = 2;
+    Chat chat = 2;
+    string user_id = 3;
+}
+
+message ChatGroupRequest {
+    string token = 1;
+    Chat chat = 2;
+    string group_id = 3;
 }
 
 message ChatResponse {
     string token = 1;
-    Array data = 2;
-}
-
-message checkUserRequest {
-    string id = 1;
-}
-
-message checkUserResponse {
-    string message = 1;
+    repeated Chat chatList = 2;
 }
 
 message checkUserRequest {
@@ -56,5 +59,7 @@ service AuthService {
     rpc Register(RegisterRequest) returns (RegisterResponse) {}
     rpc Login(LoginRequest) returns (LoginResponse) {}
     rpc checkUser(checkUserRequest) returns (checkUserResponse) {}
-    rpc Chat(ChatRequest) returns (ChatResponse) {}
+    rpc ChatWithUser(ChatUserRequest) returns (ChatResponse) {}
+    rpc ChatWithGroup(ChatGroupRequest) returns (ChatResponse) {}
+
   }
