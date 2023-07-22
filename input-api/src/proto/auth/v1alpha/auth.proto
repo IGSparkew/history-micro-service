@@ -1,0 +1,52 @@
+import "../../chat/v1alpha/chat.proto";
+syntax = "proto3";
+
+package auth.v1alpha;
+
+message Auth {
+    string username = 2;
+    string password = 3;
+}
+
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message LoginResponse {
+    string token = 1;
+}
+
+message RegisterRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message RegisterResponse {
+    string message = 1;
+}
+
+message ChatRequest {
+    string token = 1;
+    Chat chat = 2;
+}
+
+message ChatResponse {
+    string token = 1;
+    Chat chat = 2;
+}
+
+message checkUserRequest {
+    string id = 1;
+}
+
+message checkUserResponse {
+    string message = 1;
+}
+
+service AuthService {
+    rpc Register(RegisterRequest) returns (RegisterResponse) {}
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+    rpc checkUser(checkUserRequest) returns (checkUserResponse) {}
+    rpc Chat(ChatRequest) returns (ChatResponse) {}
+  }
