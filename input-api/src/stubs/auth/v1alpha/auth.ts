@@ -5,42 +5,45 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "auth.v1alpha";
 
-export interface Chat {
-  id: string;
-  content: string;
-}
-
 export interface Auth {
-  username: string;
-  password: string;
-}
-
-export interface LoginRequest {
-  username: string;
-  password: string;
-}
-
-export interface LoginResponse {
-  token: string;
+    username?: string | undefined;
+    password?: string | undefined;
 }
 
 export interface RegisterRequest {
-  username: string;
-  password: string;
+    username?: string | undefined;
+    password?: string | undefined;
+}
+
+export interface LoginRequest {
+    username?: string | undefined;
+    password?: string | undefined;
+}
+
+export interface LoginResponse {
+    token?: String | undefined;
 }
 
 export interface RegisterResponse {
-  message: string;
+    message?: string | undefined;
+}
+
+export interface checkUserRequest {
+    id: string;
+}
+
+export interface checkUserResponse {
+    message: boolean;
 }
 
 export interface ChatRequest {
-  token: string;
-  chat: Chat | undefined;
+    token : string;
+    data : Array<any>;
 }
 
 export interface ChatResponse {
-  token: string;
-  chat: Chat | undefined;
+    token : string;
+    data : Array<any>;
 }
 
 export interface checkUserRequest {
@@ -64,12 +67,15 @@ export interface AuthServiceClient {
 }
 
 export interface AuthServiceController {
-  register(
-    request: RegisterRequest,
-    metadata?: Metadata,
-  ): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
+    register(
+        request: RegisterRequest,
+        metadata?: Metadata,
+    ): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
 
-  login(request: LoginRequest, metadata?: Metadata): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
+    login(
+        request: LoginRequest,
+        metadata?: Metadata,
+    ): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
 
   checkUser(
     request: checkUserRequest,
