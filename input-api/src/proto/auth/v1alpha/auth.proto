@@ -40,8 +40,17 @@ message ChatResponse {
     Chat chat = 2;
 }
 
+message checkUserRequest {
+    string id = 1;
+}
+
+message checkUserResponse {
+    string message = 1;
+}
+
 service AuthService {
     rpc Register(RegisterRequest) returns (RegisterResponse) {}
     rpc Login(LoginRequest) returns (LoginResponse) {}
+    rpc checkUser(checkUserRequest) returns (checkUserResponse) {}
     rpc Chat(ChatRequest) returns (ChatResponse) {}
   }

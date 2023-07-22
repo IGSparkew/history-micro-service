@@ -11,10 +11,17 @@ import { GroupController } from './group/app.controller';
 import { GroupService } from './group/app.service';
 import { Group, GroupSchema } from './schemas/group.schema';
 import { Chat, ChatSchema } from './schemas/chat.schema';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthCheckService } from './check_auth/app.service';
 
 
 @Module({
   imports: [GrpcReflectionModule.register(grpcConfig),
+    JwtModule.register({
+      global: true,
+      secret: `${process.env.JWT_SECRET_KEY}` ,
+      signOptions: { expiresIn: '120s'}
+    }),
     ConfigModule.forRoot({
     envFilePath: '.env.local',
     isGlobal: true,
@@ -33,6 +40,6 @@ import { Chat, ChatSchema } from './schemas/chat.schema';
     }
   ])],
   controllers: [AppController, ChatController, GroupController],
-  providers: [AppService, ChatService, GroupService],
+  providers: [AppService, ChatService, GroupService, AuthCheckService],
 })
 export class AppModule {}

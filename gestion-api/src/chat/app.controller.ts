@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import {
   ChatGroupRequest,
   ChatList,
@@ -12,11 +12,12 @@ import {
 import { Metadata } from '@grpc/grpc-js';
 import { RpcException } from '@nestjs/microservices';
 import { ChatService } from './app.service';
+import { AuthCheckService } from 'src/check_auth/app.service';
 
 @Controller()
 @ChatServiceControllerMethods()
 export class ChatController implements ChatServiceController {
-  constructor(private readonly chatService: ChatService) {}
+  constructor(private readonly chatService: ChatService, private checkAuthService: AuthCheckService) {}
 
   async createChatWitGroup(
     request: ChatGroupRequest,
@@ -33,11 +34,18 @@ export class ChatController implements ChatServiceController {
       throw new RpcException('Error Input not valid');
     }
 
+    const right_auth = await this.checkAuthService.checkTokenApi(metadata);
+
+    if (!right_auth) {
+      throw new RpcException('Error unauthorized auth!')
+    }
+
     return this.chatService.createChatWithGroup(
       request.chat.content,
       request.groupId,
       request.ownerId,
     );
+    
   }
 
   async createChatWithUser(

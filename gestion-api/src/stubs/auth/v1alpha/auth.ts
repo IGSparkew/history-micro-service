@@ -43,12 +43,22 @@ export interface ChatResponse {
   chat: Chat | undefined;
 }
 
+export interface checkUserRequest {
+  id: string;
+}
+
+export interface checkUserResponse {
+  message: string;
+}
+
 export const AUTH_V1ALPHA_PACKAGE_NAME = "auth.v1alpha";
 
 export interface AuthServiceClient {
   register(request: RegisterRequest, metadata?: Metadata): Observable<RegisterResponse>;
 
   login(request: LoginRequest, metadata?: Metadata): Observable<LoginResponse>;
+
+  checkUser(request: checkUserRequest, metadata?: Metadata): Observable<checkUserResponse>;
 
   chat(request: ChatRequest, metadata?: Metadata): Observable<ChatResponse>;
 }
@@ -61,12 +71,17 @@ export interface AuthServiceController {
 
   login(request: LoginRequest, metadata?: Metadata): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
 
+  checkUser(
+    request: checkUserRequest,
+    metadata?: Metadata,
+  ): Promise<checkUserResponse> | Observable<checkUserResponse> | checkUserResponse;
+
   chat(request: ChatRequest, metadata?: Metadata): Promise<ChatResponse> | Observable<ChatResponse> | ChatResponse;
 }
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["register", "login", "chat"];
+    const grpcMethods: string[] = ["register", "login", "checkUser", "chat"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
