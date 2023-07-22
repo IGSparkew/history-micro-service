@@ -2,6 +2,8 @@ import { Controller } from "@nestjs/common";
 import {
     AuthServiceController,
     AuthServiceControllerMethods,
+    ChatRequest,
+    ChatResponse,
     LoginRequest,
     LoginResponse,
     RegisterRequest,
@@ -13,12 +15,16 @@ import {
 import { Metadata } from "@grpc/grpc-js";
 import { RpcException } from "@nestjs/microservices";
 import { AuthService } from "./app.service";
+import { Observable } from "rxjs";
 
 @Controller()
 @AuthServiceControllerMethods()
 export class AuthController implements AuthServiceController {
 
     constructor(private readonly authService: AuthService) { }
+    chat(request: ChatRequest, metadata?: Metadata): ChatResponse | Promise<ChatResponse> | Observable<ChatResponse> {
+        throw new Error("Method not implemented.");
+    }
 
     async register(request: RegisterRequest, metadata?: Metadata): Promise<RegisterResponse> {
         if (!request || !request.username || !request.password) {

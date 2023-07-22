@@ -48,7 +48,7 @@ export interface checkUserRequest {
 }
 
 export interface checkUserResponse {
-  message: string;
+  message: boolean;
 }
 
 export const AUTH_V1ALPHA_PACKAGE_NAME = "auth.v1alpha";

@@ -13,6 +13,7 @@ import { Group, GroupSchema } from './schemas/group.schema';
 import { Chat, ChatSchema } from './schemas/chat.schema';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthCheckService } from './check_auth/app.service';
+import { CheckUserService } from './check_user/app.service';
 
 
 @Module({
@@ -40,6 +41,6 @@ import { AuthCheckService } from './check_auth/app.service';
     }
   ])],
   controllers: [AppController, ChatController, GroupController],
-  providers: [AppService, ChatService, GroupService, AuthCheckService],
+  providers: [AppService, ChatService, GroupService, AuthCheckService, CheckUserService],
 })
 export class AppModule {}

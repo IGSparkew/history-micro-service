@@ -45,7 +45,7 @@ message checkUserRequest {
 }
 
 message checkUserResponse {
-    string message = 1;
+    bool message = 1;
 }
 
 service AuthService {
