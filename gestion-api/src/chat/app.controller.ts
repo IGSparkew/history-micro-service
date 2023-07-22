@@ -10,11 +10,9 @@ import {
   UserRequest,
 } from '../stubs/chat/v1alpha/chat';
 import { Metadata } from '@grpc/grpc-js';
-import { ClientGrpc, ClientProxyFactory, RpcException, Transport } from '@nestjs/microservices';
+import {  RpcException } from '@nestjs/microservices';
 import { ChatService } from './app.service';
 import { AuthCheckService } from 'src/check_auth/app.service';
-import { join } from 'path';
-import { AUTH_V1ALPHA_PACKAGE_NAME } from 'src/stubs/auth/v1alpha/auth';
 import { CheckUserService } from 'src/check_user/app.service';
 
 
@@ -66,7 +64,6 @@ export class ChatController implements ChatServiceController {
     if (
       !request ||
       !request.userId ||
-      !request.ownerId ||
       !request.chat ||
       !request.chat.content ||
       request.chat.content == ''
@@ -74,10 +71,28 @@ export class ChatController implements ChatServiceController {
       throw new RpcException('Error Input not valid');
     }
 
+    const right_auth = await this.checkAuthService.checkTokenApi(metadata);
+    if (!right_auth) {
+      throw new RpcException('Error unauthorized auth!')
+    }
+    
+    const ownerId = await this.checkAuthService.getUserId(metadata);
+    const isOwner = this.checkUserService.checkUser(ownerId);
+
+    if(!isOwner) {
+      throw new RpcException('Error not valid user');
+    }
+
+    const isExistUser = this.checkUserService.checkUser(request.userId);
+
+    if(!isExistUser) {
+      throw new RpcException('Error user you want to send message does not exist');
+    }
+
     return this.chatService.createChatWithUser(
       request.chat.content,
       request.userId,
-      request.ownerId,
+      ownerId,
     );
   }
 
@@ -89,7 +104,11 @@ export class ChatController implements ChatServiceController {
       throw new RpcException('Error Input not valid');
     }
 
-
+    const right_auth = await this.checkAuthService.checkTokenApi(metadata);
+    
+    if (!right_auth) {
+      throw new RpcException('Error unauthorized auth!')
+    }
     return this.chatService.findChatWithGroup(request.groupId)
   }
 
