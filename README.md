@@ -1,5 +1,33 @@
 # history-micro-service
 
+## Description Technique 
+
+- 2 API en NestJS
+- GRPC communication
+- JWT 
+- Mongo db Base de donnée avec dockerisation
+
+# Inputs
+## Input-api
+### Routes GRPC
+- Login
+- Register
+- CheckUser
+- chatWithUser
+- chatWithGroup
+- findChatUser
+- findChatGroup
+
+## Gestion-api
+### Routes GRPC
+- createChatWithUser
+- createChatWithGroup
+- findChatWithUser
+- findChatWithGroup
+- createGroup
+- findGroup
+- findAllGroup
+
 ## Description 
 
 # Input Api 
@@ -77,11 +105,12 @@ ensuite **gestion-api** envoie une requête à **input-api** pour vérifier que 
 puis renvoie le résultat de la requête
 
 Schéma : 
-
+```
 entrée utilisateur -> input-api -> gestion-api
                       input-api   <-
                       gestion-api ->
 sortie utilisateur <- input-api <-
+```
 
 # Gestion Api
 
@@ -164,31 +193,3 @@ il renvoie:
     name: <string>
 }
 ```
-
-## Description Technique 
-
-- 2 API en NestJS
-- GRPC communication
-- JWT 
-- Mongo db Base de donnée avec dockerisation
-
-# Inputs
-## Input-api
-### Routes GRPC
-- Login
-- Register
-- CheckUser
-- chatWithUser
-- chatWithGroup
-- findChatUser
-- findChatGroup
-
-## Gestion-api
-### Routes GRPC
-- createChatWithUser
-- createChatWithGroup
-- findChatWithUser
-- findChatWithGroup
-- createGroup
-- findGroup
-- findAllGroup
