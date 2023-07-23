@@ -115,7 +115,9 @@ export class ChatController implements ChatServiceController {
     request: UserRequest,
     metadata?: Metadata,
   ): Promise<ChatList> {
-
+    if(!request || !request.userId) {
+      throw new RpcException('Error Input not valid');
+    }
     
     const right_auth = await this.checkAuthService.checkTokenApi(metadata);
     if (!right_auth) {

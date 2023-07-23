@@ -63,6 +63,19 @@ message checkUserResponse {
     bool message = 1;
 }
 
+message findChatUser {
+    string userId = 1;
+}
+
+message findChatGroup {
+    string groupId = 1;
+}
+
+message chatList {
+    repeated Chat chats = 1;
+}
+
+
 service AuthService {
     rpc Register(RegisterRequest) returns (RegisterResponse) {}
     rpc Login(LoginRequest) returns (LoginResponse) {}

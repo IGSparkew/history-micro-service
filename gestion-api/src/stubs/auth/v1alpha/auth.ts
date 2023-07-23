@@ -66,6 +66,18 @@ export interface checkUserResponse {
   message: boolean;
 }
 
+export interface findChatUser {
+  userId: string;
+}
+
+export interface findChatGroup {
+  groupId: string;
+}
+
+export interface chatList {
+  chats: Chat[];
+}
+
 export const AUTH_V1ALPHA_PACKAGE_NAME = "auth.v1alpha";
 
 export interface AuthServiceClient {

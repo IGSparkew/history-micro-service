@@ -6,7 +6,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { join } from 'path';
-import { ChatRequest, ChatResponse, GroupRequest, GroupResponse } from 'src/stubs/auth/v1alpha/auth';
+import { ChatRequest, ChatResponse, GroupRequest, GroupResponse, chatList, findChatGroup, findChatUser } from 'src/stubs/auth/v1alpha/auth';
 import { CHAT_V1ALPHA_PACKAGE_NAME } from 'src/stubs/chat/v1alpha/chat';
 import { GROUP_V1ALPHA_PACKAGE_NAME } from 'src/stubs/group/v1alpha/group';
 import { JwtService } from "@nestjs/jwt";
@@ -41,6 +41,20 @@ export class SendToGestion {
     const service = await this.getGrpcService('ChatService');
     const metadata = await this.generateToken(sendMetadata);
     const response = await service.CreateChatWitGroup(data, metadata).toPromise();
+    return response;
+  }
+
+  async FindChatUser(data: findChatUser, sendMetadata: Metadata): Promise<chatList> {
+    const service = await this.getGrpcService('ChatService');
+    const metadata = await this.generateToken(sendMetadata);
+    const response = await service.findChatWithUser(data, metadata).toPromise();
+    return response;
+  }
+
+  async FindChatGroup(data: findChatGroup, sendMetadata: Metadata): Promise<chatList> {
+    const service = await this.getGrpcService('ChatService');
+    const metadata = await this.generateToken(sendMetadata);
+    const response = await service.findChatWithGroup(data, metadata).toPromise();
     return response;
   }
 
