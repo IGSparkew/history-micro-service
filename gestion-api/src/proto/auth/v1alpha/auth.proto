@@ -5,11 +5,18 @@ package auth.v1alpha;
 message Chat {
     string id = 1;
     string content = 2;
+    string owner_id = 3;
 }
 
 message Auth {
     string username = 1;
     string password = 2;
+}
+
+message Group {
+    string group_id = 1;
+    string name = 2;
+    string owner_id = 3;
 }
 
 message LoginRequest {
@@ -30,21 +37,22 @@ message RegisterResponse {
     string message = 1;
 }
 
-message ChatUserRequest {
-    string token = 1;
+message ChatRequest {
     Chat chat = 2;
     string user_id = 3;
 }
 
-message ChatGroupRequest {
-    string token = 1;
+message GroupRequest {
     Chat chat = 2;
     string group_id = 3;
 }
 
 message ChatResponse {
-    string token = 1;
-    repeated Chat chatList = 2;
+    Chat chat = 1;
+}
+
+message GroupResponse {
+    Chat chat = 1;
 }
 
 message checkUserRequest {
@@ -59,7 +67,6 @@ service AuthService {
     rpc Register(RegisterRequest) returns (RegisterResponse) {}
     rpc Login(LoginRequest) returns (LoginResponse) {}
     rpc checkUser(checkUserRequest) returns (checkUserResponse) {}
-    rpc ChatWithUser(ChatUserRequest) returns (ChatResponse) {}
-    rpc ChatWithGroup(ChatGroupRequest) returns (ChatResponse) {}
-
+    rpc ChatWithUser(ChatRequest) returns (ChatResponse) {}
+    rpc ChatWithGroup(GroupRequest) returns (GroupResponse) {}
   }

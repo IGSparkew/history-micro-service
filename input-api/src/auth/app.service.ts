@@ -5,11 +5,13 @@ import { Auth } from "src/schemas/auth.schema";
 import { LoginResponse, RegisterResponse, checkUserResponse } from "src/stubs/auth/v1alpha/auth";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt"
+import { Metadata } from "@grpc/grpc-js";
+import { SendToGestion } from "src/sendToGestion/app.service";
 
 @Injectable()
 export class AuthService {
 
-    constructor(@InjectModel(Auth.name) private authModel: Model<Auth>, private jwtService: JwtService) { }
+    constructor(@InjectModel(Auth.name) private authModel: Model<Auth>, private jwtService: JwtService, private sendToGestion: SendToGestion) { }
 
     async register(username: string, password: string): Promise<RegisterResponse> {
         password = await bcrypt.hash(password, 10);
@@ -24,7 +26,7 @@ export class AuthService {
     }
 
     async login(username: string, password: string): Promise<LoginResponse> {
-        const login = await this.authModel.findOne({ username: username});
+        const login = await this.authModel.findOne({ username: username });
         const match = await bcrypt.compare(password, login.password);
         if (!login && !match) {
             return undefined;
@@ -41,5 +43,14 @@ export class AuthService {
             return { message: false };
         }
         return { message: true };
+    }
+
+    async checkAuth(metadata: Metadata) {
+        const token = await this.sendToGestion.getToken(metadata);
+        const payload: any = await this.jwtService.decode(token);
+        if (this.checkUser(payload.sub)) {
+            return false;
+        }
+        return true;
     }
 }

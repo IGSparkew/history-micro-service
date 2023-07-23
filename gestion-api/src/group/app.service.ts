@@ -10,7 +10,6 @@ export class GroupService {
     constructor(@InjectModel(Group.name) private groupModel: Model<Group>) {}
 
     async create(groupName: string): Promise<CreateGroupResponse> {
-        console.log(groupName)
         const groupCreated = new this.groupModel({name: groupName});
         const result = await groupCreated.save();
         return {

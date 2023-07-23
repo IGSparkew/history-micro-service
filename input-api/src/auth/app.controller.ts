@@ -2,9 +2,10 @@ import { Controller } from "@nestjs/common";
 import {
     AuthServiceController,
     AuthServiceControllerMethods,
-    ChatGroupRequest,
+    ChatRequest,
     ChatResponse,
-    ChatUserRequest,
+    GroupRequest,
+    GroupResponse,
     LoginRequest,
     LoginResponse,
     RegisterRequest,
@@ -17,19 +18,36 @@ import { Metadata } from "@grpc/grpc-js";
 import { RpcException } from "@nestjs/microservices";
 import { AuthService } from "./app.service";
 import { Observable } from "rxjs";
+import { AuthCheckService } from "src/check_auth/app.service";
+import { SendToGestion } from "src/sendToGestion/app.service";
+import { JwtService } from "@nestjs/jwt";
+
+
 
 @Controller()
 @AuthServiceControllerMethods()
 export class AuthController implements AuthServiceController {
 
-    constructor(private readonly authService: AuthService) { }
+    constructor(private readonly authService: AuthService, private jwtService: JwtService, private sendToGestion: SendToGestion) { }
 
-    chatWithUser(request: ChatUserRequest, metadata?: Metadata): ChatResponse | Promise<ChatResponse> | Observable<ChatResponse> {
-        throw new Error("Method not implemented.");
+    async chatWithUser(request: ChatRequest, metadata?: Metadata): Promise<ChatResponse> {
+        if(!this.authService.checkAuth(metadata)) {
+            throw new RpcException('Error unauthorized auth!')
+        }
+        if (!request || !request.chat || !request.userId) {
+            throw new RpcException('Error Input not valid');
+        }
+        return this.sendToGestion.sendToChat(request, metadata);
     }
-    
-    chatWithGroup(request: ChatGroupRequest, metadata?: Metadata): ChatResponse | Promise<ChatResponse> | Observable<ChatResponse> {
-        throw new Error("Method not implemented.");
+
+    async chatWithGroup(request: GroupRequest, metadata?: Metadata): Promise<GroupResponse> {
+        if(!this.authService.checkAuth(metadata)) {
+            throw new RpcException('Error unauthorized auth!')
+        }
+        if (!request || !request.chat || !request.groupId) {
+            throw new RpcException('Error Input not valid');
+        }
+        return this.sendToGestion.sendToGroup(request, metadata);
     }
 
     async register(request: RegisterRequest, metadata?: Metadata): Promise<RegisterResponse> {
@@ -60,5 +78,4 @@ export class AuthController implements AuthServiceController {
             request.id,
         );
     }
-
 }

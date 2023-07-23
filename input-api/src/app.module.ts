@@ -9,6 +9,9 @@ import { AuthController } from './auth/app.controller';
 import { AuthService } from './auth/app.service';
 import { Auth, AuthSchema } from './schemas/auth.schema';
 import { JwtModule } from '@nestjs/jwt/dist';
+import { AuthCheckService } from './check_auth/app.service';
+import { SendToGestion } from './sendToGestion/app.service';
+
 
 @Module({
   imports: [GrpcReflectionModule.register(grpcConfig),
@@ -30,6 +33,6 @@ import { JwtModule } from '@nestjs/jwt/dist';
     },
   ])],
   controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  providers: [AppService, AuthService, AuthCheckService, SendToGestion],
 })
 export class AppModule { }

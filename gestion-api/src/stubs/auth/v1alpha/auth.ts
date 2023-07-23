@@ -8,11 +8,18 @@ export const protobufPackage = "auth.v1alpha";
 export interface Chat {
   id: string;
   content: string;
+  ownerId: string;
 }
 
 export interface Auth {
   username: string;
   password: string;
+}
+
+export interface Group {
+  groupId: string;
+  name: string;
+  ownerId: string;
 }
 
 export interface LoginRequest {
@@ -33,21 +40,22 @@ export interface RegisterResponse {
   message: string;
 }
 
-export interface ChatUserRequest {
-  token: string;
+export interface ChatRequest {
   chat: Chat | undefined;
   userId: string;
 }
 
-export interface ChatGroupRequest {
-  token: string;
+export interface GroupRequest {
   chat: Chat | undefined;
   groupId: string;
 }
 
 export interface ChatResponse {
-  token: string;
-  chatList: Chat[];
+  chat: Chat | undefined;
+}
+
+export interface GroupResponse {
+  chat: Chat | undefined;
 }
 
 export interface checkUserRequest {
@@ -67,9 +75,9 @@ export interface AuthServiceClient {
 
   checkUser(request: checkUserRequest, metadata?: Metadata): Observable<checkUserResponse>;
 
-  chatWithUser(request: ChatUserRequest, metadata?: Metadata): Observable<ChatResponse>;
+  chatWithUser(request: ChatRequest, metadata?: Metadata): Observable<ChatResponse>;
 
-  chatWithGroup(request: ChatGroupRequest, metadata?: Metadata): Observable<ChatResponse>;
+  chatWithGroup(request: GroupRequest, metadata?: Metadata): Observable<GroupResponse>;
 }
 
 export interface AuthServiceController {
@@ -86,14 +94,14 @@ export interface AuthServiceController {
   ): Promise<checkUserResponse> | Observable<checkUserResponse> | checkUserResponse;
 
   chatWithUser(
-    request: ChatUserRequest,
+    request: ChatRequest,
     metadata?: Metadata,
   ): Promise<ChatResponse> | Observable<ChatResponse> | ChatResponse;
 
   chatWithGroup(
-    request: ChatGroupRequest,
+    request: GroupRequest,
     metadata?: Metadata,
-  ): Promise<ChatResponse> | Observable<ChatResponse> | ChatResponse;
+  ): Promise<GroupResponse> | Observable<GroupResponse> | GroupResponse;
 }
 
 export function AuthServiceControllerMethods() {

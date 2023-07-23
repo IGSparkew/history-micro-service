@@ -70,7 +70,6 @@ export class ChatController implements ChatServiceController {
     ) {
       throw new RpcException('Error Input not valid');
     }
-
     const right_auth = await this.checkAuthService.checkTokenApi(metadata);
     if (!right_auth) {
       throw new RpcException('Error unauthorized auth!')
