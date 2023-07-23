@@ -7,7 +7,6 @@ Gestion de la création d'un user avec une route **/register**
 
 ``` 
 {
-    user_id: <number>,
     username: <string>,
     password: <string>
 }
@@ -24,33 +23,77 @@ il renvoie :
 
 ```
 {
-    token_user: <string>
+    token: <string>
 }
 ```
 
-l'utilisateur envoie les messages sur **input-api** via **/messges** POST
+l'utilisateur envoie les messages sur **input-api** via **/chatWithUser** POST
 ``` 
 {
-    content: <string>,
-    user_id: <number>
-  
+    "chat": {
+        "content": <string>,
+        "id": <string>,
+        "ownerId": <string>
+    },
+    "userId": <string>
 }
 ```
-Authorization : Bearer token_user
-si token correct  
+OU
+
+l'utilisateur envoie les messages sur **input-api** via **/chatWithGroup** POST
+``` 
+{
+    "chat": {
+        "content": <string>,
+        "id": <string>,
+        "ownerId": <string>
+    },
+    "groupId": <string>
+}
+```
+
+l'utilisateur récupère les messages sur **input-api** via **/findChatUser** POST
+``` 
+{
+    "userId": <string>
+}
+```
+
+OU
+
+l'utilisateur récupère les messages sur **input-api** via **/findChatGroup** POST
+``` 
+{
+    "groupId": <string>
+}
+```
+
+Authorization : Bearer token
+si token correct **input-api** renvoie dans un token une clé unique propre à elle-même et le userId
 **input-api** ->  **gestion-api**
-Authorization: token_api
-meta-data: token_user
+Authorization: token
+
+ensuite **gestion-api** envoie une requête à **input-api** pour vérifier que le userId récupéré existe bien
+puis renvoie le résultat de la requête
+
+Schéma : 
+
+entrée utilisateur -> input-api -> gestion-api
+                      input-api   <-
+                      gestion-api ->
+sortie utilisateur <- input-api <-
 
 # Gestion Api
 
 création de message **/user/messages** 
 ``` 
 {
-    content: <string>,
-    owner_id: <number>,
-    user_id: <number>
-  
+    "chat": {
+        "content": <string>,
+        "id": <string>,
+        "ownerId": <string>
+    },
+    "userId": <string>
 }
 ```
 
@@ -58,19 +101,23 @@ il renvoie:
 
 ``` 
 {
-    id: <number>,
-    content: <string>
-  
+    "chat": {
+        "id": "64bd00665c2ba37efec835f4",
+        "content": "sed dolore nulla anim",
+        "ownerId": "64bbedce8b1c688e8dadfe4e"
+    }
 }
 ```
 
 création de message pour un group **/group/messages** 
 ``` 
 {
-    content: <string>,
-    owner_id: <number>,
-    group_id: <number>
-  
+    "chat": {
+        "content": <string>,
+        "id": <string>,
+        "ownerId": <string>
+    },
+    "groupId": <string>
 }
 ```
 
@@ -78,10 +125,11 @@ il renvoie:
 
 ``` 
 {
-    id: <number>,
-    content: <string>,
-    group_id: <number>
-  
+    "chat": {
+        "id": "64bd00665c2ba37efec835f4",
+        "content": "sed dolore nulla anim",
+        "ownerId": "64bbedce8b1c688e8dadfe4e"
+    }
 }
 ```
 
@@ -96,7 +144,7 @@ il renvoie:
 
 ``` 
 {
-    id: <number>,
+    groupId: <string>,
     name: <string>
 }
 ```
@@ -104,7 +152,7 @@ il renvoie:
 récupération d'un group **/group** 
 ``` 
 {
-    id: <number>
+    groupId: <string>
 }
 ```
 
@@ -112,7 +160,7 @@ il renvoie:
 
 ``` 
 {
-    id: <number>,
+    groupId: <string>,
     name: <string>
 }
 ```
@@ -122,16 +170,25 @@ il renvoie:
 - 2 API en NestJS
 - GRPC communication
 - JWT 
-- SSL
-- Health check
 - Mongo db Base de donnée avec dockerisation
 
-## Inputs
-# Input Auht
-
-
-
+# Inputs
+## Input-api
 ### Routes GRPC
-
 - Login
 - Register
+- CheckUser
+- chatWithUser
+- chatWithGroup
+- findChatUser
+- findChatGroup
+
+## Gestion-api
+### Routes GRPC
+- createChatWithUser
+- createChatWithGroup
+- findChatWithUser
+- findChatWithGroup
+- createGroup
+- findGroup
+- findAllGroup
